@@ -2,6 +2,7 @@ package gov.caixa.invest.resource;
 import gov.caixa.invest.dto.SimulacaoPorDiaResponse;
 import gov.caixa.invest.dto.SimulacaoRequest;
 import gov.caixa.invest.service.SimulacaoService;
+import gov.caixa.invest.service.TelemetriaService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,12 +20,21 @@ public class SimulacaoResource {
 
     @Inject
     SimulacaoService service;
+    @Inject
+    TelemetriaService telemetriaService ;
 
     @POST
     @Transactional
     @RolesAllowed({"user", "admin"})
     public Response simular(@Valid SimulacaoRequest req) {
-        return Response.ok(service.simular(req)).build();
+
+        long inicio = System.nanoTime();
+        try {
+            return Response.ok(service.simular(req)).build();
+        } finally {
+            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
+            telemetriaService.registrarExecucao("simulacao", duracaoMs);
+        }
     }
 
 

@@ -1,6 +1,8 @@
 package gov.caixa.invest.resource;
 import gov.caixa.invest.dto.InvestimentoResponse;
+import gov.caixa.invest.dto.TelemetriaResponse;
 import gov.caixa.invest.service.InvestimentoService;
+import gov.caixa.invest.service.TelemetriaService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -15,6 +17,9 @@ public class InvestimentoResource {
 
     @Inject
     InvestimentoService investimentoService;
+    @Inject
+    TelemetriaService telemetriaService;
+
 
 
 
@@ -23,9 +28,13 @@ public class InvestimentoResource {
     @Path("/{clienteId}")
     @RolesAllowed({"user", "admin"})
     public Response listar(@PathParam("clienteId") Long clienteId) {
-
-        List<InvestimentoResponse> lista = investimentoService.listarPorCliente(clienteId);
-
-        return Response.ok(lista).build();
+        long inicio = System.nanoTime();
+        try {
+            List<InvestimentoResponse> lista = investimentoService.listarPorCliente(clienteId);
+            return Response.ok(lista).build();
+        } finally {
+            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
+            telemetriaService.registrarExecucao("investimentos", duracaoMs);
+        }
     }
 }
