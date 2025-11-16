@@ -1,0 +1,29 @@
+# Etapa 1 — Build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /app
+
+# Esses arquivos estão na raiz do contexto (code-with-quarkus)
+COPY pom.xml .
+RUN mvn -q -e -DskipTests dependency:go-offline
+
+COPY src ./src
+RUN mvn -q -e -DskipTests package
+
+# Etapa 2 — Runtime
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+
+# Também relativos ao contexto (raiz do projeto)
+COPY target/quarkus-app/ /app/
+COPY src/main/resources/privateKey.pem /app/privateKey.pem
+COPY src/main/resources/publicKey.pem /app/publicKey.pem
+
+RUN mkdir -p /app/data
+
+ENV QUARKUS_DATASOURCE_JDBC_URL=jdbc:sqlite:/app/data/invest.db
+ENV QUARKUS_DATASOURCE_DB_KIND=other
+ENV QUARKUS_DATASOURCE_JDBC_DRIVER=org.sqlite.JDBC
+ENV QUARKUS_HIBERNATE_ORM_DIALECT=org.hibernate.community.dialect.SQLiteDialect
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/quarkus-run.jar"]

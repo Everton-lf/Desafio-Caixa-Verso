@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Invest API
+  version: "1.0"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

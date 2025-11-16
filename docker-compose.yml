@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  invest-api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+    container_name: invest-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:sqlite:/app/data/invest.db
+      QUARKUS_DATASOURCE_USERNAME: ""
+      QUARKUS_DATASOURCE_PASSWORD: ""

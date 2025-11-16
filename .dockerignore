@@ -1,0 +1,9 @@
+# Ignorar apenas o que realmente não deve ir para a imagem
+
+# IDE / build / sistema
+.idea/
+.mvn/
+*.log
+
+# Permitir que src/ e target/ sejam incluídos no contexto
+# NÃO IGNORAR src e target!
