@@ -1,6 +1,8 @@
 package gov.caixa.invest.service;
+
 import gov.caixa.invest.dto.InvestimentoResponse;
 import gov.caixa.invest.entity.InvestimentoEntity;
+import gov.caixa.invest.exception.ApiException;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
@@ -12,6 +14,9 @@ public class InvestimentoService {
     public List<InvestimentoResponse> listarPorCliente(Long clienteId) {
 
         List<InvestimentoEntity> lista = InvestimentoEntity.list("clienteId", clienteId);
+        if (lista.isEmpty()) {
+            throw new ApiException("Não existe produto com esse ID");
+        }
 
         return lista.stream().map(e -> {
             InvestimentoResponse resp = new InvestimentoResponse();

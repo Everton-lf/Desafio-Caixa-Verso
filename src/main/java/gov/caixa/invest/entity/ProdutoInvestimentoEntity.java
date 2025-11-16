@@ -1,4 +1,5 @@
 package gov.caixa.invest.entity;
+
 import gov.caixa.invest.Enums.NivelRisco;
 import gov.caixa.invest.Enums.PerfilRisco;
 import gov.caixa.invest.Enums.TipoInvestimento;
@@ -36,38 +37,42 @@ public class ProdutoInvestimentoEntity extends PanacheEntity {
     }
 
     public String getNome() {
+
         return nome;
     }
 
     public TipoInvestimento getTipo() {
+
         return tipo;
     }
 
-    public void setTipo(TipoInvestimento tipo) {
-        this.tipo = tipo;
-    }
-
     public double getRentabilidadeAnual() {
+
         return rentabilidadeAnual;
     }
 
     public NivelRisco getRisco() {
+
         return risco;
     }
 
     public double getInvestimentoMinimo() {
+
         return investimentoMinimo;
     }
 
     public int getPrazoMinimoMeses() {
+
         return prazoMinimoMeses;
     }
 
     public PerfilRisco getPerfilMinimo() {
+
         return perfilMinimo;
     }
 
     public PerfilRisco getPerfilMaximo() {
+
         return perfilMaximo;
     }
 }

@@ -4,6 +4,7 @@ import gov.caixa.invest.dto.SimulacaoRequest;
 import gov.caixa.invest.dto.SimulacaoResponse;
 import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
 import gov.caixa.invest.entity.SimulacaoEntity;
+import gov.caixa.invest.exception.ApiException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -20,13 +21,13 @@ public class SimulacaoService {
                 ProdutoInvestimentoEntity.findById(req.produtoId);
 
         if (produto == null)
-            throw new IllegalArgumentException("Produto não encontrado");
+            throw new ApiException("Produto não encontrado");
 
         if (req.valorAplicado < produto.getInvestimentoMinimo())
-            throw new IllegalArgumentException("Valor abaixo do mínimo");
+            throw new ApiException("Valor abaixo do mínimo");
 
         if (req.prazoMeses < produto.getPrazoMinimoMeses())
-            throw new IllegalArgumentException("Prazo abaixo do mínimo");
+            throw new ApiException("Prazo abaixo do mínimo");
 
         double taxaMensal = Math.pow(1 + produto.getRentabilidadeAnual(), 1.0 / 12) - 1;
 

@@ -1,4 +1,5 @@
 package gov.caixa.invest.dto;
+
 import gov.caixa.invest.Enums.NivelRisco;
 import gov.caixa.invest.Enums.TipoInvestimento;
 

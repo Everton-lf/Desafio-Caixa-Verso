@@ -2,6 +2,7 @@ package gov.caixa.invest.service;
 import gov.caixa.invest.dto.SimulacaoListItem;
 import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
 import gov.caixa.invest.entity.SimulacaoEntity;
+import gov.caixa.invest.exception.ApiException;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +17,17 @@ public class SimulacaoConsultaService {
     }
 
     public List<SimulacaoListItem> listarPorDia(LocalDate data) {
+
+        if (data == null) {
+            throw new ApiException("Data inválida. Use o formato yyyy-MM-dd.");
+        }
+
         List<SimulacaoEntity> simulacoes = SimulacaoEntity.list("dataSimulacao = ?1", data);
+
+        if (simulacoes.isEmpty()) {
+            throw new ApiException("Não existem simulações para essa data.");
+        }
+
         return mapearParaDto(simulacoes);
     }
 
@@ -35,7 +46,7 @@ public class SimulacaoConsultaService {
             dto.valorFinal = s.getValorFinal();
             dto.dataSimulacao = s.getDataSimulacao();
 
-            // Buscar produto para preencher o tipo
+
             ProdutoInvestimentoEntity produto =
                     ProdutoInvestimentoEntity.findById(s.getProdutoId());
 

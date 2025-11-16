@@ -1,4 +1,5 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.Enums.PerfilRisco;
 import gov.caixa.invest.dto.ProdutoRecomendadoResponse;
 import gov.caixa.invest.service.RecomendacaoService;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+
 @Path("/produtos-recomendados")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

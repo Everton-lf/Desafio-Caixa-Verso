@@ -1,6 +1,8 @@
 package gov.caixa.invest.entity;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
@@ -26,18 +28,43 @@ public class SimulacaoEntity extends PanacheEntityBase {
     @Column(nullable = false)
     private LocalDate dataSimulacao;
 
-    public Long getProdutoId() { return produtoId; }
-    public void setProdutoId(Long produtoId) { this.produtoId = produtoId; }
+    public Long getProdutoId() {
+        return produtoId;
+    }
 
-    public Double getValor() { return valor; }
-    public void setValor(Double valor) { this.valor = valor; }
+    public void setProdutoId(Long produtoId) {
+        this.produtoId = produtoId;
+    }
 
-    public Integer getPrazoMeses() { return prazoMeses; }
-    public void setPrazoMeses(Integer prazoMeses) { this.prazoMeses = prazoMeses; }
+    public Double getValor() {
+        return valor;
+    }
 
-    public Double getValorFinal() { return valorFinal; }
-    public void setValorFinal(Double valorFinal) { this.valorFinal = valorFinal; }
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
 
-    public LocalDate getDataSimulacao() { return dataSimulacao; }
-    public void setDataSimulacao(LocalDate dataSimulacao) { this.dataSimulacao = dataSimulacao; }
+    public Integer getPrazoMeses() {
+        return prazoMeses;
+    }
+
+    public void setPrazoMeses(Integer prazoMeses) {
+        this.prazoMeses = prazoMeses;
+    }
+
+    public Double getValorFinal() {
+        return valorFinal;
+    }
+
+    public void setValorFinal(Double valorFinal) {
+        this.valorFinal = valorFinal;
+    }
+
+    public LocalDate getDataSimulacao() {
+        return dataSimulacao;
+    }
+
+    public void setDataSimulacao(LocalDate dataSimulacao) {
+        this.dataSimulacao = dataSimulacao;
+    }
 }

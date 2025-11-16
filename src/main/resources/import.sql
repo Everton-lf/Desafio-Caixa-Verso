@@ -4,7 +4,7 @@ DELETE FROM telemetriaentity;
 DELETE FROM simulacaoentity;
 DELETE FROM investimentoentity;
 DELETE FROM clienteentity;
-DELETE FROM usuarioentity;
+DELETE FROM usuario;
 DELETE FROM produtoinvestimento;
 
 
@@ -49,7 +49,7 @@ VALUES
 --  USUARIOS
 
 
-INSERT INTO usuarioentity (id, username, password, role)
+INSERT INTO usuario (id, username, password, role)
 VALUES
 (1, 'admin', 'admin123', 'ADMIN'),
 (2, 'user',  'user123',  'USER');
@@ -77,7 +77,7 @@ VALUES
 --  TELEMETRIA INICIAL
 
 
---INSERT INTO telemetriaentity (id, nomeServico, quantidadeChamadas, mediaTempoRespostaMs, dataRegistro)
---VALUES
---(1, 'simular-investimento', 120, 250, '2025-10-31'),
---(2, 'perfil-risco',          80, 180, '2025-10-31');
+INSERT INTO telemetriaentity (id, nomeServico, quantidadeChamadas, mediaTempoRespostaMs, dataRegistro)
+VALUES
+(1, 'simular-investimento', 120, 250, '2025-10-31'),
+(2, 'perfil-risco',          80, 180, '2025-10-31');

@@ -1,4 +1,5 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.dto.PerfilRiscoResponse;
 import gov.caixa.invest.service.PerfilRiscoService;
 import gov.caixa.invest.service.TelemetriaService;

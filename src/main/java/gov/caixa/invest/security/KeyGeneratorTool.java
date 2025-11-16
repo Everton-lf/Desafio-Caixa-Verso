@@ -1,4 +1,5 @@
 package gov.caixa.invest.security;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.*;
@@ -12,7 +13,7 @@ public class KeyGeneratorTool {
 
         KeyPair pair = generator.generateKeyPair();
         PrivateKey privateKey = pair.getPrivate();
-        PublicKey publicKey  = pair.getPublic();
+        PublicKey publicKey = pair.getPublic();
 
 
         Files.write(Paths.get("privateKey.pem"), (

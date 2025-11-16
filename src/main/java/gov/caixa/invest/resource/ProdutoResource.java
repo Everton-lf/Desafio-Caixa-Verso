@@ -1,4 +1,5 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.service.ProdutoService;
 import gov.caixa.invest.service.TelemetriaService;
 import jakarta.inject.Inject;

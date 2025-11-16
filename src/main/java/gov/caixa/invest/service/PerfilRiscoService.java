@@ -1,8 +1,10 @@
 package gov.caixa.invest.service;
+
 import gov.caixa.invest.Enums.PerfilRisco;
 import gov.caixa.invest.dto.PerfilRiscoResponse;
 import gov.caixa.invest.entity.InvestimentoEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +23,6 @@ public class PerfilRiscoService {
                 inicioPeriodo
         );
 
-        // Se o cliente não tem investimentos, assume conservador bem baixo
         if (investimentos.isEmpty()) {
             PerfilRiscoResponse resp = new PerfilRiscoResponse();
             resp.clienteId = clienteId;
@@ -93,10 +94,8 @@ public class PerfilRiscoService {
         return switch (perfil) {
             case CONSERVADOR ->
                     "Prioriza segurança e preservação do capital, tolera pouca oscilação nos investimentos.";
-            case MODERADO ->
-                    "Busca equilíbrio entre segurança e rentabilidade, aceitando oscilações moderadas.";
-            case AGRESSIVO ->
-                    "Aceita maior risco e volatilidade em troca de potencial de ganhos mais elevados.";
+            case MODERADO -> "Busca equilíbrio entre segurança e rentabilidade, aceitando oscilações moderadas.";
+            case AGRESSIVO -> "Aceita maior risco e volatilidade em troca de potencial de ganhos mais elevados.";
         };
     }
 }

@@ -1,4 +1,5 @@
 package gov.caixa.invest.dto;
+
 import io.smallrye.common.constraint.NotNull;
 import jakarta.validation.constraints.Min;
 

@@ -1,5 +1,6 @@
 package gov.caixa.invest.resource;
-import gov.caixa.invest.dto.SimulacaoPorDiaResponse;
+
+
 import gov.caixa.invest.dto.SimulacaoRequest;
 import gov.caixa.invest.service.SimulacaoService;
 import gov.caixa.invest.service.TelemetriaService;
@@ -10,8 +11,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.util.List;
+
+
 
 @Path("/simulacoes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -21,7 +22,7 @@ public class SimulacaoResource {
     @Inject
     SimulacaoService service;
     @Inject
-    TelemetriaService telemetriaService ;
+    TelemetriaService telemetriaService;
 
     @POST
     @Transactional
@@ -36,8 +37,6 @@ public class SimulacaoResource {
             telemetriaService.registrarExecucao("simulacao", duracaoMs);
         }
     }
-
-
 
 
 }

@@ -1,4 +1,5 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.dto.SimulacaoListItem;
 import gov.caixa.invest.service.SimulacaoConsultaService;
 import gov.caixa.invest.service.TelemetriaService;
@@ -6,6 +7,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+
 import java.time.LocalDate;
 import java.util.List;
 

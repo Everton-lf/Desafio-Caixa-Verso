@@ -1,5 +1,7 @@
 package gov.caixa.invest.dto;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 
 public class InvestimentoResponse {

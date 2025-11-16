@@ -1,4 +1,5 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.dto.LoginRequest;
 import gov.caixa.invest.dto.LoginResponse;
 import gov.caixa.invest.security.JwtGenerator;

@@ -1,6 +1,8 @@
 package gov.caixa.invest.security;
+
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
+
 import java.util.Set;
 
 @ApplicationScoped

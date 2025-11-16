@@ -1,4 +1,5 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.dto.TelemetriaResponse;
 import gov.caixa.invest.service.TelemetriaService;
 import jakarta.annotation.security.RolesAllowed;
@@ -7,6 +8,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+
 import java.util.List;
 
 @Path("/telemetria")

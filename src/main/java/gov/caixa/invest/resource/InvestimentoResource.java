@@ -1,6 +1,7 @@
 package gov.caixa.invest.resource;
+
 import gov.caixa.invest.dto.InvestimentoResponse;
-import gov.caixa.invest.dto.TelemetriaResponse;
+
 import gov.caixa.invest.service.InvestimentoService;
 import gov.caixa.invest.service.TelemetriaService;
 import jakarta.annotation.security.RolesAllowed;
@@ -9,7 +10,9 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
 import java.util.List;
+
 @Path("/investimentos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -19,8 +22,6 @@ public class InvestimentoResource {
     InvestimentoService investimentoService;
     @Inject
     TelemetriaService telemetriaService;
-
-
 
 
     @GET
