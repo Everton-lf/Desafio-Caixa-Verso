@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "simulacaoentity")
@@ -12,6 +13,9 @@ public class SimulacaoEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+
+    @Column(nullable = false)
+    private Long clienteId;
 
     @Column(nullable = false)
     private Long produtoId;
@@ -26,7 +30,7 @@ public class SimulacaoEntity extends PanacheEntityBase {
     private Double valorFinal;
 
     @Column(nullable = false)
-    private LocalDate dataSimulacao;
+    private OffsetDateTime dataSimulacao;
 
     public Long getProdutoId() {
         return produtoId;
@@ -60,11 +64,18 @@ public class SimulacaoEntity extends PanacheEntityBase {
         this.valorFinal = valorFinal;
     }
 
-    public LocalDate getDataSimulacao() {
+    public OffsetDateTime getDataSimulacao() {
         return dataSimulacao;
     }
 
-    public void setDataSimulacao(LocalDate dataSimulacao) {
+    public void setDataSimulacao(OffsetDateTime dataSimulacao) {
         this.dataSimulacao = dataSimulacao;
+    }
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 }

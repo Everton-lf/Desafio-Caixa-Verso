@@ -12,6 +12,7 @@ public class SimulacaoPorDiaResponse {
         public Long simulacaoId;
         public Long produtoId;
         public String produtoNome;
+        public Long clienteId;
         public double valorAplicado;
         public int prazoMeses;
         public double valorFinal;

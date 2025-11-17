@@ -3,7 +3,54 @@ info:
   title: Invest API
   version: "1.0"
 
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Autentica um usuário e retorna um token JWT
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Token JWT gerado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Credenciais não informadas
+        '401':
+          description: Credenciais inválidas
+
 components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          format: password
+          example: admin
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token JWT para ser usado nos demais endpoints protegidos
+          example:
   securitySchemes:
     BearerAuth:
       type: http

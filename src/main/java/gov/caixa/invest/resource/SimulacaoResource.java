@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 
 
 
-@Path("/simulacoes")
+@Path("/simular-investimento")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SimulacaoResource {
@@ -34,7 +34,7 @@ public class SimulacaoResource {
             return Response.ok(service.simular(req)).build();
         } finally {
             long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("simulacao", duracaoMs);
+            telemetriaService.registrarExecucao("simular-investimento", duracaoMs);
         }
     }
 

@@ -1,15 +1,15 @@
 package gov.caixa.invest.dto;
 
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
-//criei essa classe para evitar retornar a Entity
+
 public class SimulacaoListItem {
     public Long id;
-    public Long produtoId;
-    public double valorAplicado;
-    public int prazoMeses;
+    public Long clienteId;
+    public String produto;
+    public double valorInvestido;
     public double valorFinal;
-    public String tipo;
-    public LocalDate dataSimulacao;
+    public int prazoMeses;
+    public OffsetDateTime dataSimulacao;
 }

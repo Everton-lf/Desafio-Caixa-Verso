@@ -5,6 +5,7 @@ import gov.caixa.invest.entity.SimulacaoEntity;
 import gov.caixa.invest.exception.ApiException;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,10 @@ public class SimulacaoConsultaService {
             throw new ApiException("Data inválida. Use o formato yyyy-MM-dd.");
         }
 
-        List<SimulacaoEntity> simulacoes = SimulacaoEntity.list("dataSimulacao = ?1", data);
+        List<SimulacaoEntity> simulacoes = SimulacaoEntity.<SimulacaoEntity>listAll().stream()
+                .filter(s -> s.getDataSimulacao().toLocalDate().equals(data))
+                .sorted(Comparator.comparing(SimulacaoEntity::getDataSimulacao))
+                .collect(Collectors.toList());
 
         if (simulacoes.isEmpty()) {
             throw new ApiException("Não existem simulações para essa data.");
@@ -39,9 +43,9 @@ public class SimulacaoConsultaService {
     private List<SimulacaoListItem> mapearParaDto(List<SimulacaoEntity> simulacoes) {
         return simulacoes.stream().map(s -> {
             SimulacaoListItem dto = new SimulacaoListItem();
-            dto.id = s.getProdutoId();
-            dto.produtoId = s.getProdutoId();
-            dto.valorAplicado = s.getValor();
+            dto.id = s.id;
+            dto.clienteId = s.getClienteId();
+            dto.valorInvestido = s.getValor();
             dto.prazoMeses = s.getPrazoMeses();
             dto.valorFinal = s.getValorFinal();
             dto.dataSimulacao = s.getDataSimulacao();
@@ -50,9 +54,7 @@ public class SimulacaoConsultaService {
             ProdutoInvestimentoEntity produto =
                     ProdutoInvestimentoEntity.findById(s.getProdutoId());
 
-            dto.tipo = (produto != null && produto.getTipo() != null)
-                    ? produto.getTipo().name()
-                    : null;
+            dto.produto = produto != null ? produto.getNome() : null;
 
             return dto;
         }).collect(Collectors.toList());
