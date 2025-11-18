@@ -40,6 +40,7 @@ public class SimulacaoService {
                 .doubleValue();
 
         SimulacaoEntity entity = new SimulacaoEntity();
+        entity.setClienteId(req.clienteId);
         entity.setProdutoId(produto.id);
         entity.setValor(req.valorAplicado);
         entity.setPrazoMeses(req.prazoMeses);

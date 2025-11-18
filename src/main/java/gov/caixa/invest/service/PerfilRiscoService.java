@@ -2,99 +2,61 @@ package gov.caixa.invest.service;
 
 import gov.caixa.invest.Enums.PerfilRisco;
 import gov.caixa.invest.dto.PerfilRiscoResponse;
-import gov.caixa.invest.entity.InvestimentoEntity;
+import gov.caixa.invest.entity.ClienteEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.NotFoundException;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 public class PerfilRiscoService {
 
     public PerfilRiscoResponse calcularPerfil(Long clienteId) {
+        ClienteEntity cliente = ClienteEntity.findById(clienteId);
 
-        LocalDate hoje = LocalDate.now();
-        LocalDate inicioPeriodo = hoje.minusMonths(12);
-
-
-        List<InvestimentoEntity> investimentos = InvestimentoEntity.list(
-                "clienteId = ?1 and dataRegistro >= ?2",
-                clienteId,
-                inicioPeriodo
-        );
-
-        if (investimentos.isEmpty()) {
-            PerfilRiscoResponse resp = new PerfilRiscoResponse();
-            resp.clienteId = clienteId;
-            resp.pontuacao = 20;
-            resp.perfil = PerfilRisco.CONSERVADOR;
-            resp.descricao = descricaoPerfil(resp.perfil);
-            return resp;
+        if (cliente == null) {
+            throw new NotFoundException("Cliente não encontrado");
         }
 
-        double volumeTotal = investimentos.stream()
-                .mapToDouble(i -> i.getValor())
-                .sum();
-
-        int quantidadeMovimentacoes = investimentos.size();
-
-        int scoreVolume = calcularScoreVolume(volumeTotal);
-        int scoreFrequencia = calcularScoreFrequencia(quantidadeMovimentacoes);
-
-        int pontuacaoFinal = (int) Math.round(scoreVolume * 0.4 + scoreFrequencia * 0.6);
-
-        PerfilRisco perfil = classificarPerfil(pontuacaoFinal);
+        PerfilRisco perfil = extrairPerfil(cliente.getPerfilRisco());
 
         PerfilRiscoResponse resp = new PerfilRiscoResponse();
         resp.clienteId = clienteId;
-        resp.pontuacao = pontuacaoFinal;
-        resp.perfil = perfil;
+        resp.perfil = formatarPerfil(perfil);
+        resp.pontuacao = pontuacaoPerfil(perfil);
         resp.descricao = descricaoPerfil(perfil);
 
         return resp;
     }
 
-    private int calcularScoreVolume(double volumeTotal) {
-        // deixei assim para um ajuste depois conforme a realidade interna do banco
-        if (volumeTotal <= 10_000) {
-            return 25;
-        } else if (volumeTotal <= 50_000) {
-            return 45;
-        } else if (volumeTotal <= 200_000) {
-            return 70;
-        } else {
-            return 90;
-        }
-    }
-
-    private int calcularScoreFrequencia(int qtdMovimentacoes) {
-
-        if (qtdMovimentacoes <= 2) {
-            return 20;
-        } else if (qtdMovimentacoes <= 6) {
-            return 50;
-        } else if (qtdMovimentacoes <= 12) {
-            return 70;
-        } else {
-            return 90;
-        }
-    }
-
-    private PerfilRisco classificarPerfil(int pontuacao) {
-        if (pontuacao <= 40) {
+    private PerfilRisco extrairPerfil(String perfilRisco) {
+        if (perfilRisco == null || perfilRisco.isBlank()) {
             return PerfilRisco.CONSERVADOR;
-        } else if (pontuacao <= 70) {
-            return PerfilRisco.MODERADO;
-        } else {
-            return PerfilRisco.AGRESSIVO;
         }
+        try {
+            return PerfilRisco.valueOf(perfilRisco.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            return PerfilRisco.CONSERVADOR;
+        }
+    }
+
+    private String formatarPerfil(PerfilRisco perfil) {
+        String nome = perfil.name().toLowerCase(Locale.ROOT);
+        return Character.toUpperCase(nome.charAt(0)) + nome.substring(1);
+    }
+
+    private int pontuacaoPerfil(PerfilRisco perfil) {
+        return switch (perfil) {
+            case CONSERVADOR -> 40;
+            case MODERADO -> 65;
+            case AGRESSIVO -> 85;
+        };
     }
 
     private String descricaoPerfil(PerfilRisco perfil) {
         return switch (perfil) {
-            case CONSERVADOR ->
-                    "Prioriza segurança e preservação do capital, tolera pouca oscilação nos investimentos.";
-            case MODERADO -> "Busca equilíbrio entre segurança e rentabilidade, aceitando oscilações moderadas.";
+            case CONSERVADOR -> "Prioriza segurança e preservação do capital, tolera pouca oscilação nos investimentos.";
+            case MODERADO -> "Perfil equilibrado entre segurança e rentabilidade.";
             case AGRESSIVO -> "Aceita maior risco e volatilidade em troca de potencial de ganhos mais elevados.";
         };
     }

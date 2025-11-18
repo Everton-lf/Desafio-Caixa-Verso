@@ -11,7 +11,6 @@ public class SimulacaoPorDiaResponse {
     public static class ItemSimulacao {
         public Long simulacaoId;
         public Long produtoId;
-        public String produtoNome;
         public Long clienteId;
         public double valorAplicado;
         public int prazoMeses;

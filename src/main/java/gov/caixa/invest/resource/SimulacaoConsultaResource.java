@@ -1,6 +1,7 @@
 package gov.caixa.invest.resource;
 
 import gov.caixa.invest.dto.SimulacaoListItem;
+import gov.caixa.invest.dto.SimulacaoPorProdutoDiaItem;
 import gov.caixa.invest.service.SimulacaoConsultaService;
 import gov.caixa.invest.service.TelemetriaService;
 import jakarta.annotation.security.RolesAllowed;
@@ -48,6 +49,20 @@ public class SimulacaoConsultaResource {
             telemetriaService.registrarExecucao("simulacoes-por-produto", duracaoMs);
         }
     }
+
+    @GET
+    @Path("/por-produto-dia")
+    @RolesAllowed({"admin", "user"})
+    public List<SimulacaoPorProdutoDiaItem> porProdutoDia() {
+        long inicio = System.nanoTime();
+        try {
+            return service.listarPorProdutoEDia();
+        } finally {
+            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
+            telemetriaService.registrarExecucao("simulacoes-por-produto-dia", duracaoMs);
+        }
+    }
+
 
     @GET
     @Path("/todas")
