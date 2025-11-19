@@ -1,9 +1,9 @@
 
 
-DELETE FROM telemetriaentity;
-DELETE FROM simulacaoentity;
-DELETE FROM investimentoentity;
-DELETE FROM clienteentity;
+DELETE FROM telemetria;
+DELETE FROM simulacoes;
+DELETE FROM investimentos;
+DELETE FROM clientes;
 DELETE FROM usuario;
 DELETE FROM produtoinvestimento;
 
@@ -11,7 +11,7 @@ DELETE FROM produtoinvestimento;
 --  CLIENTES
 
 
-INSERT INTO clienteentity (id, nome, idade, rendaMensal, objetivo, perfilRisco)
+INSERT INTO clientes (id, nome, idade, renda_mensal, objetivo, perfil_risco)
 VALUES
 (1, 'João Silva',         32, 3500.00, 'aposentadoria',      'MODERADO'),
 (2, 'Maria Oliveira',     45, 12000.00, 'aposentadoria',      'CONSERVADOR'),
@@ -24,7 +24,7 @@ VALUES
 
 
 INSERT INTO produtoinvestimento
-(id, nome, tipo, investimentoMinimo, prazoMinimoMeses, rentabilidadeAnual, risco, perfilMinimo, perfilMaximo)
+(id, nome, tipo, investimento_minimo, prazo_minimo_meses, rentabilidade_anual, risco, perfil_minimo, perfil_maximo)
 VALUES
 (1, 'CDB Caixa 2026',                  'CDB',            100.00, 6, 0.118, 'BAIXO',   'CONSERVADOR', 'MODERADO'),
 (2, 'CDB Banco Inter 2027',            'CDB',            100.00, 6, 0.125, 'BAIXO',   'CONSERVADOR', 'AGRESSIVO'),
@@ -49,7 +49,7 @@ VALUES
 --  USUARIOS
 
 
-INSERT INTO usuario (id, username, password, role)
+INSERT INTO usuarios (id, username, password, role)
 VALUES
 (1, 'admin', 'admin123', 'ADMIN'),
 (2, 'user',  'user123',  'USER');
@@ -58,7 +58,7 @@ VALUES
 --  INVESTIMENTOS
 
 
-INSERT INTO investimentoentity (id, clienteId, tipo, valor, rentabilidade, dataRegistro)
+INSERT INTO investimentos (id, cliente_id, tipo, valor, rentabilidade, data_registro)
 VALUES
 (1, 1, 'CDB',               5000.00, 0.12, '2025-01-15'),
 (2, 1, 'Fundo Multimercado',3000.00, 0.08, '2025-03-10'),
@@ -68,16 +68,16 @@ VALUES
 --  SIMULACOES REALIZADAS
 
 
-INSERT INTO simulacaoentity (id, produtoId, valor, prazoMeses, valorFinal, dataSimulacao)
+INSERT INTO simulacoes (id, produto_id,cliente_id, valor, prazo_meses, valor_final, sata_simulacao)
 VALUES
-(1, 1,   5000.00, 12, 5612.45, '2025-10-10'),
-(2, 30,  3000.00,  6, 3159.00, '2025-10-12');
+(1, 1,1,   5000.00, 12, 5612.45, '2025-10-10 22:00:00.000'),
+(2, 30,2,  3000.00,  6, 3159.00, '2025-10-12 23:00:00.000');
 
 
 --  TELEMETRIA INICIAL
 
 
-INSERT INTO telemetriaentity (id, nomeServico, quantidadeChamadas, mediaTempoRespostaMs, dataRegistro)
+INSERT INTO telemetria (id, nome_servico, quantidade_chamadas, media_tempo_resposta_ms, data_registro)
 VALUES
 (1, 'simular-investimento', 120, 250, '2025-10-31'),
 (2, 'perfil-risco',          80, 180, '2025-10-31');

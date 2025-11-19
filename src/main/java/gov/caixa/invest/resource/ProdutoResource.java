@@ -2,6 +2,7 @@ package gov.caixa.invest.resource;
 
 import gov.caixa.invest.service.ProdutoService;
 import gov.caixa.invest.service.TelemetriaService;
+import gov.caixa.invest.telemetria.MedirTelemetria;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -15,29 +16,18 @@ public class ProdutoResource {
 
     @Inject
     ProdutoService produtoService;
-    @Inject
-    TelemetriaService telemetriaService;
+
 
     @GET
+    @MedirTelemetria("produtos-listar")
     public Object listarProdutos() {
-        long inicio = System.nanoTime();
-        try {
-            return produtoService.listarTodos();
-        } finally {
-            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("produtos-listar", duracaoMs);
-        }
+        return produtoService.listarTodos();
     }
 
     @GET
     @Path("/{id}")
+    @MedirTelemetria("produtos-buscar")
     public Object buscarPorId(@PathParam("id") Long id) {
-        long inicio = System.nanoTime();
-        try {
-            return produtoService.buscarPorId(id);
-        } finally {
-            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("produtos-buscar", duracaoMs);
-        }
+        return produtoService.buscarPorId(id);
     }
 }

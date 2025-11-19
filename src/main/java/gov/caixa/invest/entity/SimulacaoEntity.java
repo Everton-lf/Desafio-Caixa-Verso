@@ -7,29 +7,29 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "simulacaoentity")
+@Table(name = "simulacoes")
 public class SimulacaoEntity extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="cliente_id")
     private Long clienteId;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="produto_id")
     private Long produtoId;
 
     @Column(nullable = false)
     private Double valor;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="prazo_meses")
     private Integer prazoMeses;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="valor_final")
     private Double valorFinal;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="sata_simulacao")
     private OffsetDateTime dataSimulacao;
 
     public Long getProdutoId() {

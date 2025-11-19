@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "clienteentity")
+@Table(name = "clientes")
 public class ClienteEntity extends PanacheEntity {
 
     @Column(nullable = false)
@@ -15,13 +15,13 @@ public class ClienteEntity extends PanacheEntity {
     @Column(nullable = false)
     private Integer idade;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "renda_mensal")
     private Double rendaMensal;
 
     @Column(nullable = false)
     private String objetivo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="perfil_risco")
     private String perfilRisco;
 
     public ClienteEntity() {

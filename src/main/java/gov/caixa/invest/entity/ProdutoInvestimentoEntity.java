@@ -4,10 +4,7 @@ import gov.caixa.invest.Enums.NivelRisco;
 import gov.caixa.invest.Enums.PerfilRisco;
 import gov.caixa.invest.Enums.TipoInvestimento;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -18,19 +15,23 @@ public class ProdutoInvestimentoEntity extends PanacheEntity {
 
     @Enumerated(EnumType.STRING)
     private TipoInvestimento tipo;
-
+    @Column(name="rentabilidade_anual")
     private double rentabilidadeAnual;
 
     @Enumerated(EnumType.STRING)
     private NivelRisco risco;
 
+    @Column(name="investimento_minimo")
     private double investimentoMinimo;
+    @Column(name="prazo_minimo_meses")
     private int prazoMinimoMeses;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="perfil_minimo")
     private PerfilRisco perfilMinimo;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="perfil_maximo")
     private PerfilRisco perfilMaximo;
 
     public ProdutoInvestimentoEntity() {

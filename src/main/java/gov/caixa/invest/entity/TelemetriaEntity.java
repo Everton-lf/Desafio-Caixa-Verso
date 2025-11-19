@@ -6,23 +6,23 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "telemetriaentity")
+@Table(name = "telemetria")
 public class TelemetriaEntity extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="nome_servico")
     private String nomeServico;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="quantidade_chamadas")
     private Long quantidadeChamadas;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="media_tempo_resposta_ms")
     private Double mediaTempoRespostaMs;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="data_registro")
     private LocalDate dataRegistro;
 
     public String getNomeServico() {

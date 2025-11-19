@@ -3,7 +3,7 @@ package gov.caixa.invest.resource;
 import gov.caixa.invest.dto.SimulacaoListItem;
 import gov.caixa.invest.dto.SimulacaoPorProdutoDiaItem;
 import gov.caixa.invest.service.SimulacaoConsultaService;
-import gov.caixa.invest.service.TelemetriaService;
+import gov.caixa.invest.telemetria.MedirTelemetria;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -20,61 +20,41 @@ public class SimulacaoConsultaResource {
 
     @Inject
     SimulacaoConsultaService service;
-    @Inject
-    TelemetriaService telemetriaService;
+
+
 
     @GET
     @Path("/dia/{data}")
     @RolesAllowed({"admin", "user"})
+    @MedirTelemetria("simulacoes-por-dia")
     public List<SimulacaoListItem> porDia(@PathParam("data") String data) {
-        long inicio = System.nanoTime();
-        LocalDate d = LocalDate.parse(data);
-        try {
-            return service.listarPorDia(d);
-        } finally {
-            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("simulacoes-por-dia", duracaoMs);
-        }
+        LocalDate date = LocalDate.parse(data);
+        return service.listarPorDia(date);
     }
 
     @GET
     @Path("/produto/{produtoId}")
     @RolesAllowed({"admin", "user"})
+    @MedirTelemetria("simulacoes-por-produto")
     public List<SimulacaoListItem> porProduto(@PathParam("produtoId") Long produtoId) {
-        long inicio = System.nanoTime();
-        try {
-            return service.listarPorProduto(produtoId);
-        } finally {
-            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("simulacoes-por-produto", duracaoMs);
-        }
+        return service.listarPorProduto(produtoId);
     }
 
     @GET
     @Path("/por-produto-dia")
     @RolesAllowed({"admin", "user"})
+    @MedirTelemetria("simulacoes-por-produto-dia")
     public List<SimulacaoPorProdutoDiaItem> porProdutoDia() {
-        long inicio = System.nanoTime();
-        try {
-            return service.listarPorProdutoEDia();
-        } finally {
-            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("simulacoes-por-produto-dia", duracaoMs);
-        }
+        return service.listarPorProdutoEDia();
     }
 
 
     @GET
     @Path("/todas")
     @RolesAllowed({"admin"})
+    @MedirTelemetria("simulacoes-todas")
     public List<SimulacaoListItem> todas() {
-        long inicio = System.nanoTime();
-        try {
-            return service.listarTodas();
-        } finally {
-            long duracaoMs = (System.nanoTime() - inicio) / 1_000_000;
-            telemetriaService.registrarExecucao("simulacoes-todas", duracaoMs);
-        }
+        return service.listarTodas();
     }
 }
 

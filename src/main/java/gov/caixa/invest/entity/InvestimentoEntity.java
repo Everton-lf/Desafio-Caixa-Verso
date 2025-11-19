@@ -8,9 +8,9 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "investimentoentity")
+@Table(name = "investimentos")
 public class InvestimentoEntity extends PanacheEntity {
-
+    @Column(name = "cliente_id")
     private Long clienteId;
 
     @Column(nullable = false)
@@ -22,7 +22,7 @@ public class InvestimentoEntity extends PanacheEntity {
     @Column(nullable = false)
     private Double rentabilidade;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "data_registro")
     private LocalDate dataRegistro;
 
     public InvestimentoEntity() {
