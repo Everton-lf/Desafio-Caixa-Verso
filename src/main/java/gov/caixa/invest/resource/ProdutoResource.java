@@ -1,7 +1,6 @@
 package gov.caixa.invest.resource;
 
 import gov.caixa.invest.service.ProdutoService;
-import gov.caixa.invest.service.TelemetriaService;
 import gov.caixa.invest.telemetria.MedirTelemetria;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

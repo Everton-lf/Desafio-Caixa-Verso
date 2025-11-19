@@ -4,7 +4,7 @@ DELETE FROM telemetria;
 DELETE FROM simulacoes;
 DELETE FROM investimentos;
 DELETE FROM clientes;
-DELETE FROM usuario;
+DELETE FROM usuarios;
 DELETE FROM produtoinvestimento;
 
 

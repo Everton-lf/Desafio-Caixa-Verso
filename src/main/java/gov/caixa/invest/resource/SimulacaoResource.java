@@ -2,7 +2,6 @@ package gov.caixa.invest.resource;
 
 import gov.caixa.invest.dto.SimulacaoRequest;
 import gov.caixa.invest.service.SimulacaoService;
-import gov.caixa.invest.service.TelemetriaService;
 import gov.caixa.invest.telemetria.MedirTelemetria;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
