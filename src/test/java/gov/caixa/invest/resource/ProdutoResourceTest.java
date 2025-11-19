@@ -46,5 +46,19 @@ class ProdutoResourceTest {
         assertEquals(id, produto.id);
         assertEquals("CDB Caixa 2026", produto.getNome());
     }
+    @Test
+    @TestSecurity(user = "admin")
+    void deveRetornarNotFoundQuandoProdutoNaoExiste() {
+        String body = RestAssured.given()
+                .accept(ContentType.JSON)
+                .get("/produtos/{id}", 9999)
+                .then()
+                .statusCode(404)
+                .extract()
+                .body()
+                .asString();
+
+        assertEquals("Produto não encontrado", body);
+    }
 
 }
