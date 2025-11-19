@@ -1,4 +1,4 @@
-package gov.caixa.invest.Enums;
+package gov.caixa.invest.enums;
 
 public enum PerfilRisco {
     CONSERVADOR, MODERADO, AGRESSIVO

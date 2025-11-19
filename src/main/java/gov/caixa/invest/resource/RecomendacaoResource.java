@@ -1,6 +1,6 @@
 package gov.caixa.invest.resource;
 
-import gov.caixa.invest.Enums.PerfilRisco;
+import gov.caixa.invest.enums.PerfilRisco;
 import gov.caixa.invest.dto.ProdutoRecomendadoResponse;
 import gov.caixa.invest.service.RecomendacaoService;
 import gov.caixa.invest.telemetria.MedirTelemetria;

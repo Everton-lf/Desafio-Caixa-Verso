@@ -43,6 +43,8 @@ class ProdutoResourceTest {
                 .as(ProdutoInvestimentoEntity.class);
 
         assertNotNull(produto);
-        assertEquals(id, produto.getNome());
+        assertEquals(id, produto.id);
+        assertEquals("CDB Caixa 2026", produto.getNome());
     }
+
 }

@@ -1,6 +1,6 @@
 package gov.caixa.invest.service;
-import gov.caixa.invest.Enums.NivelRisco;
-import gov.caixa.invest.Enums.PerfilRisco;
+import gov.caixa.invest.enums.NivelRisco;
+import gov.caixa.invest.enums.PerfilRisco;
 import gov.caixa.invest.dto.ProdutoRecomendadoResponse;
 import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
 import jakarta.enterprise.context.ApplicationScoped;

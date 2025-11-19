@@ -1,6 +1,6 @@
 package gov.caixa.invest.service;
 
-import gov.caixa.invest.Enums.PerfilRisco;
+import gov.caixa.invest.enums.PerfilRisco;
 import gov.caixa.invest.dto.PerfilRiscoResponse;
 import gov.caixa.invest.entity.ClienteEntity;
 import jakarta.enterprise.context.ApplicationScoped;

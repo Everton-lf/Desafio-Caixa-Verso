@@ -1,7 +1,7 @@
 package gov.caixa.invest.dto;
 
-import gov.caixa.invest.Enums.NivelRisco;
-import gov.caixa.invest.Enums.TipoInvestimento;
+import gov.caixa.invest.enums.NivelRisco;
+import gov.caixa.invest.enums.TipoInvestimento;
 
 public class ProdutoRecomendadoResponse {
 

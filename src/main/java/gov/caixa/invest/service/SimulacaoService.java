@@ -1,6 +1,6 @@
 package gov.caixa.invest.service;
 
-import gov.caixa.invest.Enums.TipoInvestimento;
+import gov.caixa.invest.enums.TipoInvestimento;
 import gov.caixa.invest.dto.SimulacaoPorDiaResponse;
 import gov.caixa.invest.dto.SimulacaoRequest;
 import gov.caixa.invest.dto.SimulacaoResponse;

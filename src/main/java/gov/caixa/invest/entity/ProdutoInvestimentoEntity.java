@@ -1,8 +1,9 @@
 package gov.caixa.invest.entity;
 
-import gov.caixa.invest.Enums.NivelRisco;
-import gov.caixa.invest.Enums.PerfilRisco;
-import gov.caixa.invest.Enums.TipoInvestimento;
+
+import gov.caixa.invest.enums.NivelRisco;
+import gov.caixa.invest.enums.PerfilRisco;
+import gov.caixa.invest.enums.TipoInvestimento;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
