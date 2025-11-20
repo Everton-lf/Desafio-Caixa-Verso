@@ -1,25 +1,34 @@
 package gov.caixa.invest.service;
+
 import gov.caixa.invest.enums.NivelRisco;
 import gov.caixa.invest.enums.PerfilRisco;
 import gov.caixa.invest.dto.ProdutoRecomendadoResponse;
 import gov.caixa.invest.entity.ProdutoInvestimento;
+import gov.caixa.invest.enums.PreferenciaInvestimento;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class RecomendacaoService {
 
-    public List<ProdutoRecomendadoResponse> recomendar(PerfilRisco perfil) {
+    public List<ProdutoRecomendadoResponse> recomendar(PerfilRisco perfil,
+                                                       BigDecimal volumeInvestimento,
+                                                       Integer movimentacoesMensais,
+                                                       PreferenciaInvestimento preferencia) {
 
-        // lista todos os produtos do banco
         @SuppressWarnings("unchecked")
         List<ProdutoInvestimento> produtos = ProdutoInvestimento.listAll();
 
         return produtos.stream()
                 .filter(p -> dentroDoPerfil(p, perfil))
                 .filter(p -> riscoCompativel(p.getRisco(), perfil))
-                .sorted((a, b) -> Double.compare(b.getRentabilidadeAnual(), a.getRentabilidadeAnual()))
+                .filter(p -> volumeCompativel(p, volumeInvestimento))
+                .filter(p -> liquidezCompativel(p, movimentacoesMensais))
+                .sorted(comparador(preferencia))
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
@@ -37,6 +46,32 @@ public class RecomendacaoService {
             case AGRESSIVO -> true; // aceita todos
         };
     }
+    private boolean volumeCompativel(ProdutoInvestimento produto, BigDecimal volumeInvestimento) {
+        if (volumeInvestimento == null) {
+            return true;
+        }
+
+        return volumeInvestimento.compareTo(produto.getInvestimentoMinimo()) >= 0;
+    }
+
+    private boolean liquidezCompativel(ProdutoInvestimento produto, Integer movimentacoesMensais) {
+        if (movimentacoesMensais == null || movimentacoesMensais <= 0) {
+            return true;
+        }
+
+        int prazoMaximoDesejado = movimentacoesMensais >= 4 ? 3 : movimentacoesMensais >= 2 ? 6 : 12;
+        return produto.getPrazoMinimoMeses() <= prazoMaximoDesejado;
+    }
+
+    private Comparator<ProdutoInvestimento> comparador(PreferenciaInvestimento preferencia) {
+        if (preferencia == PreferenciaInvestimento.LIQUIDEZ) {
+            return Comparator.comparingInt(ProdutoInvestimento::getPrazoMinimoMeses)
+                    .thenComparing(Comparator.comparingDouble(ProdutoInvestimento::getRentabilidadeAnual).reversed());
+        }
+
+        return Comparator.comparingDouble(ProdutoInvestimento::getRentabilidadeAnual).reversed();
+    }
+
 
     private ProdutoRecomendadoResponse toResponse(ProdutoInvestimento p) {
         ProdutoRecomendadoResponse recomendado = new ProdutoRecomendadoResponse();

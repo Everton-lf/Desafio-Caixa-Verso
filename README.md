@@ -1,7 +1,7 @@
 Invest Simulator API
 
-API para simulação e consulta de investimentos construída com Quarkus, SQLite e autenticação JWT. 
-A aplicação recebe uma solicitação de simulação, encontra o produto mais adequado, 
+API para simulação e consulta de investimentos construída com Quarkus, SQLite e autenticação JWT.
+A aplicação recebe uma solicitação de simulação, encontra o produto mais adequado,
 calcula rentabilidade diária e persiste o histórico para consultas futuras.
 
 ## Documentação e URL base
@@ -16,13 +16,13 @@ calcula rentabilidade diária e persiste o histórico para consultas futuras.
 - Quarkus 3.11.0
 
 ## Antes de qualquer inicialização do sistema é necessario
-```bash chmod +x mvnw ``` 
+```bash chmod +x mvnw ```
 - Evitar erro de autorização
 
 ## Credenciais de teste e autenticação
 1. Realize login em `POST /auth/login` com um dos usuários padrão:
-  - admin / admin123 (roles: `admin`, `user`)
-  - user / user123 (role: `user`)
+- admin / admin123 (roles: `admin`, `user`)
+- user / user123 (role: `user`)
 2. O endpoint retorna um token JWT; inclua-o no header `Authorization` para acessar os demais recursos.
 
 ## Banco de dados
@@ -33,11 +33,11 @@ calcula rentabilidade diária e persiste o histórico para consultas futuras.
 ### 1) Docker Compose (recomendado)
 
 - Sempre executar ```bash mvn clean package ```
-Na raiz do projeto:
+  Na raiz do projeto:
 ```bash
 docker compose up --build
 ```
-- API disponível em `http://localhost:8080/` 
+- API disponível em `http://localhost:8080/`
 - Volume `./data` mantém o banco entre reinicializações.
 
 ### 2) Build de imagem manual
@@ -77,3 +77,7 @@ Observação: o primeiro comando baixa dependências do Maven Central; é necess
 ## Melhorias no projeto
 
 - Realizar paginação nos endpoints
+- Enriquecer a seleção de produtos considerando perfil de risco do cliente, preferência de liquidez e prazo solicitado; reutilizar esses critérios no motor de recomendação com pontuação que use histórico de simulações/movimentações para volume e frequência.
+- Evoluir telemetria para armazenar percentis/erros por endpoint e permitir filtro por período no endpoint público.
+- Fortalecer segurança com armazenamento de senha com hash, respostas 401/403 diferenciadas e testes automatizados de autorização.
+- Habilitar execução consistente dos testes (Testcontainers para SQLite ou banco em memória) e adicionar cenários cobrindo simulação, recomendação e telemetria com dados parametrizados.

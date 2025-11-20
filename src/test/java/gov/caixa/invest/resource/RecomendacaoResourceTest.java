@@ -16,7 +16,7 @@ class RecomendacaoResourceTest {
     @Test
     @TestSecurity(user = "user", roles = {"user"})
     void deveRetornarProdutosOrdenadosPorRentabilidadeParaPerfilModerado() {
-        ProdutoRecomendadoResponse[] recomendados = listarRecomendacoes(PerfilRisco.MODERADO);
+        ProdutoRecomendadoResponse[] recomendados = listarRecomendacoes(PerfilRisco.MODERADO, null, null, null);
 
         assertEquals(11, recomendados.length);
         assertEquals("Fundo Ações Brasil", recomendados[0].nome);
@@ -28,7 +28,7 @@ class RecomendacaoResourceTest {
     @Test
     @TestSecurity(user = "admin", roles = {"admin"})
     void deveIncluirProdutosDeAltoRiscoParaPerfilAgressivo() {
-        ProdutoRecomendadoResponse[] recomendados = listarRecomendacoes(PerfilRisco.AGRESSIVO);
+        ProdutoRecomendadoResponse[] recomendados = listarRecomendacoes(PerfilRisco.AGRESSIVO, null, null, null);
 
         assertEquals(9, recomendados.length);
         assertEquals("ETF IVVB11", recomendados[0].nome);
@@ -36,9 +36,41 @@ class RecomendacaoResourceTest {
         assertEquals("Tesouro IPCA+ 2035", recomendados[recomendados.length - 1].nome);
     }
 
-    private ProdutoRecomendadoResponse[] listarRecomendacoes(PerfilRisco perfil) {
-        return RestAssured.given()
-                .accept(ContentType.JSON)
+    @Test
+    @TestSecurity(user = "user", roles = {"user"})
+    void deveFiltrarPorVolumeEFrequenciaPriorizandoLiquidez() {
+        ProdutoRecomendadoResponse[] recomendados = listarRecomendacoes(
+                PerfilRisco.MODERADO,
+                50.00,
+                5,
+                "LIQUIDEZ");
+
+        assertEquals(2, recomendados.length);
+        assertEquals("Tesouro Selic 2027", recomendados[0].nome);
+        assertEquals("Tesouro IPCA+ 2035", recomendados[1].nome);
+        assertTrue(recomendados[0].rentabilidadeAnual >= recomendados[1].rentabilidadeAnual);
+    }
+
+    private ProdutoRecomendadoResponse[] listarRecomendacoes(PerfilRisco perfil,
+                                                             Double volume,
+                                                             Integer movimentacoes,
+                                                             String preferencia) {
+        var request = RestAssured.given()
+                .accept(ContentType.JSON);
+
+        if (volume != null) {
+            request = request.queryParam("volume", volume);
+        }
+
+        if (movimentacoes != null) {
+            request = request.queryParam("frequenciaMovimentacao", movimentacoes);
+        }
+
+        if (preferencia != null) {
+            request = request.queryParam("preferencia", preferencia);
+        }
+
+        return request
                 .get("/produtos-recomendados/{perfil}", perfil)
                 .then()
                 .statusCode(200)
