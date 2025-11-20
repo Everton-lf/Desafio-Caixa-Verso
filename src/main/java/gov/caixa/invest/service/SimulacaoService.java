@@ -1,5 +1,6 @@
 package gov.caixa.invest.service;
 
+import gov.caixa.invest.entity.Cliente;
 import gov.caixa.invest.enums.TipoInvestimento;
 import gov.caixa.invest.dto.SimulacaoPorDiaResponse;
 import gov.caixa.invest.dto.SimulacaoRequest;
@@ -25,6 +26,10 @@ public class SimulacaoService {
     @Transactional
     public SimulacaoResponse simular(SimulacaoRequest req) {
 
+        Cliente cliente = Cliente.findById(req.clienteId);
+        if (cliente == null) {
+            throw new ValidationException("Cliente não encontrado");
+        }
 
 
         ProdutoInvestimento produto = selecionarProduto(req.tipoProduto);

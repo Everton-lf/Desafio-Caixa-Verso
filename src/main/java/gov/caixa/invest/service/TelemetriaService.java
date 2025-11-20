@@ -1,8 +1,12 @@
 package gov.caixa.invest.service;
-import gov.caixa.invest.dto.TelemetriaResponse;
+
+import gov.caixa.invest.dto.TelemetriaListaResponse;
+import gov.caixa.invest.dto.TelemetriaPeriodoResponse;
+import gov.caixa.invest.dto.TelemetriaServicoResponse;
 import gov.caixa.invest.entity.Telemetria;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,16 +35,41 @@ public class TelemetriaService {
         }
     }
 
-    public List<TelemetriaResponse> listar() {
-        return Telemetria.<Telemetria>listAll().stream().map(this::mapearResposta).toList();
+    public TelemetriaListaResponse listar() {
+        List<Telemetria> registros = Telemetria.listAll();
+
+        TelemetriaListaResponse resposta = new TelemetriaListaResponse();
+        resposta.servicos = registros.stream().map(this::mapearServico).toList();
+        resposta.periodo = mapearPeriodo(registros);
+
+        return resposta;
     }
 
-    private TelemetriaResponse mapearResposta(Telemetria entity) {
-        TelemetriaResponse response = new TelemetriaResponse();
-        response.nomeServico = entity.getNomeServico();
-        response.quantidadeChamadas = entity.getQuantidadeChamadas();
-        response.mediaTempoRespostaMs = entity.getMediaTempoRespostaMs();
-        response.dataRegistro = entity.getDataRegistro();
-        return response;
+        private TelemetriaServicoResponse mapearServico(Telemetria entity){
+            TelemetriaServicoResponse response = new TelemetriaServicoResponse();
+            response.nome = entity.getNomeServico();
+            response.quantidadeChamadas = entity.getQuantidadeChamadas();
+            response.mediaTempoRespostaMs = entity.getMediaTempoRespostaMs();
+            return response;
+        }
+        private TelemetriaPeriodoResponse mapearPeriodo(List<Telemetria> registros) {
+            TelemetriaPeriodoResponse periodo = new TelemetriaPeriodoResponse();
+
+            if (!registros.isEmpty()) {
+                LocalDate dataMaisRecente = registros.stream()
+                        .map(Telemetria::getDataRegistro)
+                        .max(LocalDate::compareTo)
+                        .orElse(null);
+
+                LocalDate dataMaisAntiga = registros.stream()
+                        .map(Telemetria::getDataRegistro)
+                        .min(LocalDate::compareTo)
+                        .orElse(null);
+
+                periodo.inicio = dataMaisAntiga;
+                periodo.fim = dataMaisRecente;
+            }
+
+            return periodo;
+        }
     }
-}
