@@ -29,7 +29,7 @@ public class Simulacao extends PanacheEntityBase {
     @Column(nullable = false,name="valor_final")
     private Double valorFinal;
 
-    @Column(nullable = false,name="sata_simulacao")
+    @Column(nullable = false,name="data_simulacao")
     private OffsetDateTime dataSimulacao;
 
     public Long getProdutoId() {

@@ -51,8 +51,8 @@ VALUES
 
 INSERT INTO usuarios (id, username, password, role)
 VALUES
-(1, 'admin', 'admin123', 'ADMIN'),
-(2, 'user',  'user123',  'USER');
+(1, 'admin', 'admin123', 'admin'),
+(2, 'user',  'user123',  'user');
 
 
 --  INVESTIMENTOS
@@ -68,7 +68,7 @@ VALUES
 --  SIMULACOES REALIZADAS
 
 
-INSERT INTO simulacoes (id, produto_id,cliente_id, valor, prazo_meses, valor_final, sata_simulacao)
+INSERT INTO simulacoes (id, produto_id,cliente_id, valor, prazo_meses, valor_final, data_simulacao)
 VALUES
 (1, 1,1,   5000.00, 12, 5612.45, '2025-10-10 22:00:00.000'),
 (2, 30,2,  3000.00,  6, 3159.00, '2025-10-12 23:00:00.000');
