@@ -7,10 +7,12 @@ import gov.caixa.invest.enums.TipoInvestimento;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "produtoinvestimento")
-public class ProdutoInvestimentoEntity extends PanacheEntity {
+public class ProdutoInvestimento extends PanacheEntity {
 
 
     private String nome;
@@ -24,7 +26,7 @@ public class ProdutoInvestimentoEntity extends PanacheEntity {
     private NivelRisco risco;
 
     @Column(name = "investimento_minimo")
-    private double investimentoMinimo;
+    private BigDecimal investimentoMinimo;
     @Column(name = "prazo_minimo_meses")
     private int prazoMinimoMeses;
 
@@ -36,7 +38,7 @@ public class ProdutoInvestimentoEntity extends PanacheEntity {
     @Column(name = "perfil_maximo")
     private PerfilRisco perfilMaximo;
 
-    public ProdutoInvestimentoEntity() {
+    public ProdutoInvestimento() {
     }
 
     public String getNome() {
@@ -59,7 +61,7 @@ public class ProdutoInvestimentoEntity extends PanacheEntity {
         return risco;
     }
 
-    public double getInvestimentoMinimo() {
+    public BigDecimal getInvestimentoMinimo() {
 
         return investimentoMinimo;
     }

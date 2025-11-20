@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "investimentos")
-public class InvestimentoEntity extends PanacheEntity {
+public class Investimento extends PanacheEntity {
     @Column(name = "cliente_id")
     private Long clienteId;
 
@@ -25,10 +25,10 @@ public class InvestimentoEntity extends PanacheEntity {
     @Column(nullable = false, name = "data_registro")
     private LocalDate dataRegistro;
 
-    public InvestimentoEntity() {
+    public Investimento() {
     }
 
-    public InvestimentoEntity(Long clienteId, String tipo, Double valor, Double rentabilidade, LocalDate dataRegistro) {
+    public Investimento(Long clienteId, String tipo, Double valor, Double rentabilidade, LocalDate dataRegistro) {
         this.clienteId = clienteId;
         this.tipo = tipo;
         this.valor = valor;

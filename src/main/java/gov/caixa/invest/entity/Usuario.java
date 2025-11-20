@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuarios")
-public class UsuarioEntity extends PanacheEntity {
+public class Usuario extends PanacheEntity {
 
     @Column(nullable = false, unique = true)
     private String username;

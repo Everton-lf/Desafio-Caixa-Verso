@@ -21,8 +21,6 @@ public class SimulacaoConsultaResource {
     @Inject
     SimulacaoConsultaService service;
 
-
-
     @GET
     @Path("/dia/{data}")
     @RolesAllowed({"admin", "user"})

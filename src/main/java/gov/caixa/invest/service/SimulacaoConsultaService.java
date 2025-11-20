@@ -1,9 +1,9 @@
 package gov.caixa.invest.service;
 import gov.caixa.invest.dto.SimulacaoListItem;
 import gov.caixa.invest.dto.SimulacaoPorProdutoDiaItem;
-import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
-import gov.caixa.invest.entity.SimulacaoEntity;
-import gov.caixa.invest.exception.ApiException;
+import gov.caixa.invest.entity.ProdutoInvestimento;
+import gov.caixa.invest.entity.Simulacao;
+import gov.caixa.invest.exception.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -16,45 +16,45 @@ import java.util.stream.Collectors;
 public class SimulacaoConsultaService {
 
     public List<SimulacaoListItem> listarTodas() {
-        List<SimulacaoEntity> simulacoes = SimulacaoEntity.listAll();
+        List<Simulacao> simulacoes = Simulacao.listAll();
         return mapearParaDto(simulacoes);
     }
 
     public List<SimulacaoListItem> listarPorDia(LocalDate data) {
 
         if (data == null) {
-            throw new ApiException("Data inválida. Use o formato yyyy-MM-dd.");
+            throw new ValidationException("Data inválida. Use o formato yyyy-MM-dd.");
         }
 
-        List<SimulacaoEntity> simulacoes = SimulacaoEntity.<SimulacaoEntity>listAll().stream()
+        List<Simulacao> simulacoes = Simulacao.<Simulacao>listAll().stream()
                 .filter(s -> s.getDataSimulacao().toLocalDate().equals(data))
-                .sorted(Comparator.comparing(SimulacaoEntity::getDataSimulacao))
+                .sorted(Comparator.comparing(Simulacao::getDataSimulacao))
                 .collect(Collectors.toList());
 
         if (simulacoes.isEmpty()) {
-            throw new ApiException("Não existem simulações para essa data.");
+            throw new ValidationException("Não existem simulações para essa data.");
         }
 
         return mapearParaDto(simulacoes);
     }
 
     public List<SimulacaoListItem> listarPorProduto(Long produtoId) {
-        List<SimulacaoEntity> simulacoes = SimulacaoEntity.list("produtoId = ?1", produtoId);
+        List<Simulacao> simulacoes = Simulacao.list("produtoId = ?1", produtoId);
         return mapearParaDto(simulacoes);
     }
     public List<SimulacaoPorProdutoDiaItem> listarPorProdutoEDia() {
-        List<SimulacaoEntity> simulacoes = SimulacaoEntity.listAll();
+        List<Simulacao> simulacoes = Simulacao.listAll();
 
         if (simulacoes.isEmpty()) {
             return List.of();
         }
 
-        Map<Long, String> nomesProdutos = ProdutoInvestimentoEntity.<ProdutoInvestimentoEntity>listAll().stream()
-                .collect(Collectors.toMap(p -> p.id, ProdutoInvestimentoEntity::getNome));
+        Map<Long, String> nomesProdutos = ProdutoInvestimento.<ProdutoInvestimento>listAll().stream()
+                .collect(Collectors.toMap(p -> p.id, ProdutoInvestimento::getNome));
 
         Map<String, EstatisticaSimulacao> agrupado = new LinkedHashMap<>();
 
-        for (SimulacaoEntity simulacao : simulacoes) {
+        for (Simulacao simulacao : simulacoes) {
             LocalDate data = simulacao.getDataSimulacao().toLocalDate();
             String chave = simulacao.getProdutoId() + "|" + data;
 
@@ -78,7 +78,7 @@ public class SimulacaoConsultaService {
                 .collect(Collectors.toList());
     }
 
-    private List<SimulacaoListItem> mapearParaDto(List<SimulacaoEntity> simulacoes) {
+    private List<SimulacaoListItem> mapearParaDto(List<Simulacao> simulacoes) {
         return simulacoes.stream().map(s -> {
             SimulacaoListItem dto = new SimulacaoListItem();
             dto.id = s.id;
@@ -89,8 +89,8 @@ public class SimulacaoConsultaService {
             dto.dataSimulacao = s.getDataSimulacao();
 
 
-            ProdutoInvestimentoEntity produto =
-                    ProdutoInvestimentoEntity.findById(s.getProdutoId());
+            ProdutoInvestimento produto =
+                    ProdutoInvestimento.findById(s.getProdutoId());
 
             dto.produto = produto != null ? produto.getNome() : null;
 

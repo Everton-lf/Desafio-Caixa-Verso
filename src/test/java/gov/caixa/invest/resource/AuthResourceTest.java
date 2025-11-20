@@ -60,7 +60,7 @@ class AuthResourceTest {
                 .body(request)
                 .post("/auth/login")
                 .then()
-                .statusCode(401)
-                .body(equalTo("Credenciais inválidas."));
+                .statusCode(403)
+                .body("message", equalTo("Credenciais inválidas."));
     }
 }

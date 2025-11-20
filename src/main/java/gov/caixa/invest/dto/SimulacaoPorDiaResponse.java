@@ -1,5 +1,6 @@
 package gov.caixa.invest.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class SimulacaoPorDiaResponse {
         public Long simulacaoId;
         public Long produtoId;
         public Long clienteId;
-        public double valorAplicado;
+        public BigDecimal valorAplicado;
         public int prazoMeses;
         public double valorFinal;
     }

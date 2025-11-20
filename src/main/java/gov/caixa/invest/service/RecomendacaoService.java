@@ -2,7 +2,7 @@ package gov.caixa.invest.service;
 import gov.caixa.invest.enums.NivelRisco;
 import gov.caixa.invest.enums.PerfilRisco;
 import gov.caixa.invest.dto.ProdutoRecomendadoResponse;
-import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
+import gov.caixa.invest.entity.ProdutoInvestimento;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ public class RecomendacaoService {
 
         // lista todos os produtos do banco
         @SuppressWarnings("unchecked")
-        List<ProdutoInvestimentoEntity> produtos = ProdutoInvestimentoEntity.listAll();
+        List<ProdutoInvestimento> produtos = ProdutoInvestimento.listAll();
 
         return produtos.stream()
                 .filter(p -> dentroDoPerfil(p, perfil))
@@ -24,7 +24,7 @@ public class RecomendacaoService {
                 .collect(Collectors.toList());
     }
 
-    private boolean dentroDoPerfil(ProdutoInvestimentoEntity p, PerfilRisco perfil) {
+    private boolean dentroDoPerfil(ProdutoInvestimento p, PerfilRisco perfil) {
         return perfil.ordinal() >= p.getPerfilMinimo().ordinal()
                 && perfil.ordinal() <= p.getPerfilMaximo().ordinal();
     }
@@ -38,7 +38,7 @@ public class RecomendacaoService {
         };
     }
 
-    private ProdutoRecomendadoResponse toResponse(ProdutoInvestimentoEntity p) {
+    private ProdutoRecomendadoResponse toResponse(ProdutoInvestimento p) {
         ProdutoRecomendadoResponse recomendado = new ProdutoRecomendadoResponse();
         recomendado.id = p.id;
         recomendado.nome = p.getNome();

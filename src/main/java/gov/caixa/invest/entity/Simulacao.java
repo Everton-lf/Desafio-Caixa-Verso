@@ -3,12 +3,12 @@ package gov.caixa.invest.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "simulacoes")
-public class SimulacaoEntity extends PanacheEntityBase {
+public class Simulacao extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class SimulacaoEntity extends PanacheEntityBase {
     private Long produtoId;
 
     @Column(nullable = false)
-    private Double valor;
+    private BigDecimal valor;
 
     @Column(nullable = false, name="prazo_meses")
     private Integer prazoMeses;
@@ -40,11 +40,11 @@ public class SimulacaoEntity extends PanacheEntityBase {
         this.produtoId = produtoId;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

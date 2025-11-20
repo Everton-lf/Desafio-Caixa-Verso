@@ -2,7 +2,7 @@ package gov.caixa.invest.service;
 
 import gov.caixa.invest.enums.PerfilRisco;
 import gov.caixa.invest.dto.PerfilRiscoResponse;
-import gov.caixa.invest.entity.ClienteEntity;
+import gov.caixa.invest.entity.Cliente;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.NotFoundException;
 
@@ -12,7 +12,7 @@ import java.util.Locale;
 public class PerfilRiscoService {
 
     public PerfilRiscoResponse calcularPerfil(Long clienteId) {
-        ClienteEntity cliente = ClienteEntity.findById(clienteId);
+        Cliente cliente = Cliente.findById(clienteId);
 
         if (cliente == null) {
             throw new NotFoundException("Cliente não encontrado");

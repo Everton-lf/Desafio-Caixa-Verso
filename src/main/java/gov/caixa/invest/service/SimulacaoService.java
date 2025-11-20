@@ -4,11 +4,12 @@ import gov.caixa.invest.enums.TipoInvestimento;
 import gov.caixa.invest.dto.SimulacaoPorDiaResponse;
 import gov.caixa.invest.dto.SimulacaoRequest;
 import gov.caixa.invest.dto.SimulacaoResponse;
-import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
-import gov.caixa.invest.entity.SimulacaoEntity;
-import gov.caixa.invest.exception.ApiException;
+import gov.caixa.invest.entity.ProdutoInvestimento;
+import gov.caixa.invest.entity.Simulacao;
+import gov.caixa.invest.exception.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,22 +25,22 @@ public class SimulacaoService {
     @Transactional
     public SimulacaoResponse simular(SimulacaoRequest req) {
 
-        ProdutoInvestimentoEntity produto = selecionarProduto(req.tipoProduto);
+        ProdutoInvestimento produto = selecionarProduto(req.tipoProduto);
 
-        if (req.valorAplicado < produto.getInvestimentoMinimo())
-            throw new ApiException("Valor abaixo do mínimo");
+        if (req.valorAplicado.compareTo(produto.getInvestimentoMinimo()) < 0)
+            throw new ValidationException("Valor abaixo do mínimo");
 
         if (req.prazoMeses < produto.getPrazoMinimoMeses())
-            throw new ApiException("Prazo abaixo do mínimo");
+            throw new ValidationException("Prazo abaixo do mínimo");
 
         double taxaMensal = Math.pow(1 + produto.getRentabilidadeAnual(), 1.0 / 12) - 1;
 
-        double valorFinal = BigDecimal.valueOf(req.valorAplicado)
+        double valorFinal = req.valorAplicado
                 .multiply(BigDecimal.valueOf(Math.pow(1 + taxaMensal, req.prazoMeses)))
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
 
-        SimulacaoEntity entity = new SimulacaoEntity();
+        Simulacao entity = new Simulacao();
         entity.setClienteId(req.clienteId);
         entity.setProdutoId(produto.id);
         entity.setValor(req.valorAplicado);
@@ -53,10 +54,10 @@ public class SimulacaoService {
     }
 
     public List<SimulacaoPorDiaResponse.ItemSimulacao> listarPorData(LocalDate data) {
-        List<SimulacaoEntity> lista = SimulacaoEntity.list("dataSimulacao = ?1", data);
+        List<Simulacao> lista = Simulacao.list("dataSimulacao = ?1", data);
 
         return lista.stream().map(s -> {
-            ProdutoInvestimentoEntity p = ProdutoInvestimentoEntity.findById(s.getProdutoId());
+            ProdutoInvestimento p = ProdutoInvestimento.findById(s.getProdutoId());
 
             SimulacaoPorDiaResponse.ItemSimulacao item = new SimulacaoPorDiaResponse.ItemSimulacao();
             item.simulacaoId = s.id;
@@ -70,30 +71,30 @@ public class SimulacaoService {
     }
 
 
-    private ProdutoInvestimentoEntity selecionarProduto(String tipoProduto) {
+    private ProdutoInvestimento selecionarProduto(String tipoProduto) {
         if (tipoProduto == null)
-            throw new ApiException("Tipo de produto não informado");
+            throw new ValidationException("Tipo de produto não informado");
 
         TipoInvestimento tipo;
         try {
             tipo = TipoInvestimento.valueOf(tipoProduto.trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ex) {
-            throw new ApiException("Tipo de produto inválido");
+            throw new ValidationException("Tipo de produto inválido");
         }
 
-        ProdutoInvestimentoEntity produto = ProdutoInvestimentoEntity
+        ProdutoInvestimento produto = ProdutoInvestimento
                 .find("tipo = ?1 order by rentabilidadeAnual desc", tipo)
                 .firstResult();
 
         if (produto == null)
-            throw new ApiException("Produto não encontrado para o tipo informado");
+            throw new NotFoundException("Produto não encontrado para o tipo informado");
 
         return produto;
     }
 
     private SimulacaoResponse montarResposta(
-            SimulacaoEntity s,
-            ProdutoInvestimentoEntity p
+            Simulacao s,
+            ProdutoInvestimento p
     ) {
         SimulacaoResponse resposta = new SimulacaoResponse();
 

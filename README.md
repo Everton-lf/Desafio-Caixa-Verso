@@ -1,75 +1,71 @@
 Invest Simulator API
 
+API para simulação e consulta de investimentos construída com Quarkus, SQLite e autenticação JWT. 
+A aplicação recebe uma solicitação de simulação, encontra o produto mais adequado, 
+calcula rentabilidade diária e persiste o histórico para consultas futuras.
+
+## Documentação e URL base
+- Swagger UI: http://localhost:8080/q/swagger-ui/
+- OpenAPI JSON: http://localhost:8080/q/openapi
+- Todos os endpoints, exceto `/auth/login`, exigem header `Authorization: Bearer <token>`.
 
 
+## Versões e requisitos
+- Java 21 (JDK 21)
+- Maven 3.9+ (ou use o wrapper `./mvnw` incluído)
+- Quarkus 3.11.0
 
- Sobre o projeto 
+## Credenciais de teste e autenticação
+1. Realize login em `POST /auth/login` com um dos usuários padrão:
+  - admin / admin123 (roles: `admin`, `user`)
+  - user / user123 (role: `user`)
+2. O endpoint retorna um token JWT; inclua-o no header `Authorization` para acessar os demais recursos.
 
+## Banco de dados
+- SQLite em `./data/invest.db` (montado como volume no Docker e criado automaticamente com dados de exemplo via `import.sql`).
+- Para executar em memória temporária, basta remover ou alterar o volume `./data` antes de subir o ambiente.
 
-
-A Invest Simulator API é um serviço para simulação de investimentos em diferentes produtos financeiros. 
-A aplicação recebe uma solicitação JSON com parâmetros de valor aplicado, datas e preferências do investidor, 
-valida os dados de acordo com as informações armazenadas no banco SQLite, identifica o produto mais adequado 
-e retorna o resultado da simulação com rentabilidade diária e acumulada. 
-
-Além disso, a API mantém um histórico das simulações realizadas, gera dados de telemetria e conta com 
-autenticação por JWT, garantindo segurança no acesso aos endpoints.
-
-
-
- Funcionalidades Principais
-
-
-
-✔ Recebe envelope JSON com solicitação de simulação  
-✔ Consulta parâmetros armazenados em banco SQLite  
-✔ Valida entrada conforme regras de produto  
-✔ Filtra o produto financeiro mais adequado  
-✔ Calcula simulação com resultados diários  
-✔ Retorna envelope JSON com produto e valores calculados  
-✔ Persiste a simulação em banco local  
-✔ Endpoint com histórico de simulações  
-✔ Endpoint com valores por produto e dia  
-✔ Endpoint de telemetria (volumes e tempos de resposta)  
-✔ Documentação interativa via Swagger  
-✔ Autenticação JWT Obrigatória (Bearer Token)  
-✔ Execução completa via Docker (Dockerfile + Docker Compose)
-
- Arquitetura 
-
-
-
-A aplicação foi desenvolvida em Quarkus, utilizando Jakarta REST, JPA/Hibernate e SQLite. 
-A imagem é construída em dois estágios Docker (build e runtime), garantindo leveza e eficiência.
-
-
-
-
-Banco de Dados  (SQLite)
-
-
-
-O banco é criado automaticamente no volume `./data/invest.db` e contém tabelas com:
-- Produtos financeiros parametrizados
-- Simulações realizadas
-- Telemetria (volumetria e tempos)
-
- Autenticação JWT 
-
-
-
-A API utiliza JWT Bearer Token. Para autenticar, gere um token e informe no header HTTP:
-
-Authorization: Bearer <seu_token_aqui>
-
-
- Execução em Container / Running in Docker
-
-
- Opção 1 — Docker Compose (recomendado)
-
-PT-BR:
+## Como executar
+### 1) Docker Compose (recomendado)
 Na raiz do projeto:
-
 ```bash
 docker compose up --build
+```
+- API disponível em `http://localhost:8080/` 
+- Volume `./data` mantém o banco entre reinicializações.
+
+### 2) Build de imagem manual
+```bash
+docker build -f docker/Dockerfile.jvm -t invest-api .
+docker run -p 8080:8080 -v $(pwd)/data:/app/data --name invest-api invest-api
+```
+
+### 3) Modo desenvolvimento Quarkus
+Pré-requisitos: JDK 21 e Maven (ou use o wrapper incluso).
+```bash
+./mvnw quarkus:dev
+```
+- Hot reload ativo.
+- Swagger UI disponível na mesma URL.
+
+### 4) Executar testes
+```bash
+./mvnw test
+```
+Observação: o primeiro comando baixa dependências do Maven Central; é necessário acesso à internet para completar.
+
+## Principais recursos
+- Simulação de investimento (`/simulacao`) com validações de produto e cliente.
+- Histórico e consultas agregadas de simulações (`/simulacao/consulta`).
+- Recomendações e perfis de risco.
+- Telemetria de uso (restrita a `admin`).
+
+## Estrutura do projeto
+- `src/main/java`: código das APIs, regras de negócio e segurança JWT.
+- `src/main/resources/application.properties`: configuração do Quarkus, banco SQLite e chaves JWT.
+- `docker/`: Dockerfiles para build JVM, legacy-jar e nativo.
+- `data/`: volume local do SQLite.
+
+## Melhorias no projeto
+
+- Realizar paginação nos endpoints

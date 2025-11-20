@@ -16,9 +16,10 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
             message = "Recurso não encontrado";
         }
 
+        ErrorMessage errorMessage = new ErrorMessage(message);
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(message)
-                .type(MediaType.TEXT_PLAIN)
+                .entity(errorMessage)
+                .type(MediaType.APPLICATION_JSON)
                 .build();
     }
 }

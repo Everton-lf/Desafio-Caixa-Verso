@@ -5,6 +5,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,15 +34,11 @@ class PerfilRiscoResourceTest {
     @Test
     @TestSecurity(user = "user", roles = {"user"})
     void deveRetornarNotFoundQuandoClienteNaoExiste() {
-        String body = RestAssured.given()
+        RestAssured.given()
                 .accept(ContentType.JSON)
                 .get("/perfil-risco/{clienteId}", 9999)
                 .then()
                 .statusCode(404)
-                .extract()
-                .body()
-                .asString();
-
-        assertEquals("Cliente não encontrado", body);
+                .body("message", Matchers.equalTo("Cliente não encontrado"));
     }
 }

@@ -2,6 +2,7 @@ package gov.caixa.invest.resource;
 
 import gov.caixa.invest.dto.InvestimentoResponse;
 
+import gov.caixa.invest.entity.Investimento;
 import gov.caixa.invest.service.InvestimentoService;
 import gov.caixa.invest.telemetria.MedirTelemetria;
 import jakarta.annotation.security.RolesAllowed;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/investimentos")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,7 +28,16 @@ public class InvestimentoResource {
     @RolesAllowed({"user", "admin"})
     @MedirTelemetria("investimentos")
     public Response listar(@PathParam("clienteId") Long clienteId) {
-        List<InvestimentoResponse> lista = investimentoService.listarPorCliente(clienteId);
-        return Response.ok(lista).build();
+        List<Investimento> lista = investimentoService.listarPorCliente(clienteId);
+        List<InvestimentoResponse> response = lista.stream().map(e -> {
+            InvestimentoResponse resp = new InvestimentoResponse();
+            resp.id = e.getClienteId();
+            resp.tipo = e.getTipo();
+            resp.valor = e.getValor();
+            resp.rentabilidade = e.getRentabilidade();
+            resp.dataAplicacao = e.getDataRegistro();
+            return resp;
+        }).collect(Collectors.toList());
+        return Response.ok(response).build();
     }
 }

@@ -1,6 +1,6 @@
 package gov.caixa.invest.resource;
 
-import gov.caixa.invest.entity.ProdutoInvestimentoEntity;
+import gov.caixa.invest.entity.ProdutoInvestimento;
 import gov.caixa.invest.service.ProdutoService;
 import gov.caixa.invest.telemetria.MedirTelemetria;
 import jakarta.inject.Inject;
@@ -22,14 +22,14 @@ public class ProdutoResource {
 
     @GET
     @MedirTelemetria("produtos-listar")
-    public List<ProdutoInvestimentoEntity> listarProdutos() {
+    public List<ProdutoInvestimento> listarProdutos() {
         return produtoService.listarTodos();
     }
 
     @GET
     @Path("/{id}")
     @MedirTelemetria("produtos-buscar")
-    public ProdutoInvestimentoEntity buscarPorId(@PathParam("id") Long id) {
+    public ProdutoInvestimento buscarPorId(@PathParam("id") Long id) {
         return produtoService.buscarPorId(id);
     }
 }

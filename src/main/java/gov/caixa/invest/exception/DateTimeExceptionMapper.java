@@ -11,10 +11,10 @@ public class DateTimeExceptionMapper implements ExceptionMapper<DateTimeParseExc
 
     @Override
     public Response toResponse(DateTimeParseException exception) {
+        ErrorMessage errorMessage =
+                new ErrorMessage("Data inválida. Use o formato yyyy-MM-dd, exemplo: 2025-11-16.");
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(Map.of(
-                        "message", "Data inválida. Use o formato yyyy-MM-dd, exemplo: 2025-11-16."
-                ))
+                .entity(errorMessage)
                 .build();
     }
 }

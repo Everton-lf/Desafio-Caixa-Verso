@@ -1,6 +1,6 @@
 package gov.caixa.invest.service;
 import gov.caixa.invest.dto.TelemetriaResponse;
-import gov.caixa.invest.entity.TelemetriaEntity;
+import gov.caixa.invest.entity.Telemetria;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
@@ -12,10 +12,10 @@ public class TelemetriaService {
     @Transactional
     public void registrarExecucao(String nomeServico, long duracaoMs) {
         LocalDate hoje = LocalDate.now();
-        TelemetriaEntity entity = TelemetriaEntity.find("nomeServico = ?1 and dataRegistro = ?2", nomeServico, hoje).firstResult();
+        Telemetria entity = Telemetria.find("nomeServico = ?1 and dataRegistro = ?2", nomeServico, hoje).firstResult();
 
         if (entity == null) {
-            entity = new TelemetriaEntity();
+            entity = new Telemetria();
             entity.setNomeServico(nomeServico);
             entity.setQuantidadeChamadas(1L);
             entity.setMediaTempoRespostaMs((double) duracaoMs);
@@ -32,10 +32,10 @@ public class TelemetriaService {
     }
 
     public List<TelemetriaResponse> listar() {
-        return TelemetriaEntity.<TelemetriaEntity>listAll().stream().map(this::mapearResposta).toList();
+        return Telemetria.<Telemetria>listAll().stream().map(this::mapearResposta).toList();
     }
 
-    private TelemetriaResponse mapearResposta(TelemetriaEntity entity) {
+    private TelemetriaResponse mapearResposta(Telemetria entity) {
         TelemetriaResponse response = new TelemetriaResponse();
         response.nomeServico = entity.getNomeServico();
         response.quantidadeChamadas = entity.getQuantidadeChamadas();

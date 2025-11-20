@@ -2,12 +2,19 @@ package gov.caixa.invest.resource;
 
 import gov.caixa.invest.dto.LoginRequest;
 import gov.caixa.invest.dto.LoginResponse;
+import gov.caixa.invest.entity.Usuario;
+import gov.caixa.invest.exception.ErrorMessage;
 import gov.caixa.invest.security.JwtGenerator;
-import gov.caixa.invest.security.UserStore;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.Optional;
+import java.util.Set;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,17 +34,20 @@ public class AuthResource {
                     .build();
         }
 
-        String senhaRegistrada = UserStore.USERS.get(req.username);
+        Optional<Usuario> possivelUsuario = Usuario.find("username", req.username).firstResultOptional();
+        if (possivelUsuario.isEmpty()) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .build();
+        }
+        Usuario usuario = possivelUsuario.get();
 
-        if (senhaRegistrada == null || !senhaRegistrada.equals(req.password)) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Credenciais inválidas.")
+        if (!usuario.getPassword().equals(req.password)) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(new ErrorMessage("Credenciais inválidas."))
                     .build();
         }
 
-        var roles = UserStore.ROLES.get(req.username);
-
-        String token = jwtGenerator.generate(req.username, roles);
+        String token = jwtGenerator.generate(req.username, Set.of(usuario.getRole()));
 
         return Response.ok(new LoginResponse(token)).build();
     }
