@@ -29,7 +29,7 @@ public class RecomendacaoResource {
     @MedirTelemetria("recomendacao")
 
     public Response recomendar(@PathParam("perfil") PerfilRisco perfil,
-                               @QueryParam("volume") BigDecimal volumeInvestimento,
+                               @QueryParam("volumeInvestimento") BigDecimal volumeInvestimento,
                                @QueryParam("frequenciaMovimentacao") Integer movimentacoesMensais,
                                @QueryParam("preferencia") PreferenciaInvestimento preferencia) {
         List<ProdutoRecomendadoResponse> lista = recomendacaoService.recomendar(perfil, volumeInvestimento, movimentacoesMensais, preferencia);

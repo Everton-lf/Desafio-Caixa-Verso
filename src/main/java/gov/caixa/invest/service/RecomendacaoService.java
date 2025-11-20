@@ -46,6 +46,7 @@ public class RecomendacaoService {
             case AGRESSIVO -> true; // aceita todos
         };
     }
+
     private boolean volumeCompativel(ProdutoInvestimento produto, BigDecimal volumeInvestimento) {
         if (volumeInvestimento == null) {
             return true;
@@ -59,7 +60,7 @@ public class RecomendacaoService {
             return true;
         }
 
-        int prazoMaximoDesejado = movimentacoesMensais >= 4 ? 3 : movimentacoesMensais >= 2 ? 6 : 12;
+        int prazoMaximoDesejado = movimentacoesMensais >= 4 ? 1 : movimentacoesMensais >= 2 ? 3 : 12;
         return produto.getPrazoMinimoMeses() <= prazoMaximoDesejado;
     }
 
