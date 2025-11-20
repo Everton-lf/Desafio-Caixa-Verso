@@ -1,7 +1,8 @@
 package gov.caixa.invest.resource;
 
-import gov.caixa.invest.dto.InvestimentoResponse;
 
+
+import gov.caixa.invest.dto.InvestimentoResponse;
 import gov.caixa.invest.entity.Investimento;
 import gov.caixa.invest.service.InvestimentoService;
 import gov.caixa.invest.telemetria.MedirTelemetria;

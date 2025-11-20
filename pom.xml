@@ -8,8 +8,6 @@
     <groupId>gov.caixa.invest</groupId>
     <artifactId>invest-simulator</artifactId>
     <version>1.0.0</version>
-
-    <!-- Importa BOM do Quarkus -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -155,9 +153,7 @@
         </plugins>
 
 
-
     </build>
-
 
 
 </project>

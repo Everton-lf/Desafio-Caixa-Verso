@@ -25,6 +25,8 @@ public class SimulacaoService {
     @Transactional
     public SimulacaoResponse simular(SimulacaoRequest req) {
 
+
+
         ProdutoInvestimento produto = selecionarProduto(req.tipoProduto);
 
         if (req.valorAplicado.compareTo(produto.getInvestimentoMinimo()) < 0)
