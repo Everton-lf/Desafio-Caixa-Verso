@@ -15,6 +15,10 @@ calcula rentabilidade diária e persiste o histórico para consultas futuras.
 - Maven 3.9+ (ou use o wrapper `./mvnw` incluído)
 - Quarkus 3.11.0
 
+## Antes de qualquer inicialização do sistema é necessario
+```bash chmod +x mvnw ``` 
+- Evitar erro de autorização
+
 ## Credenciais de teste e autenticação
 1. Realize login em `POST /auth/login` com um dos usuários padrão:
   - admin / admin123 (roles: `admin`, `user`)
@@ -27,6 +31,8 @@ calcula rentabilidade diária e persiste o histórico para consultas futuras.
 
 ## Como executar
 ### 1) Docker Compose (recomendado)
+
+- Sempre executar ```bash mvn clean package ```
 Na raiz do projeto:
 ```bash
 docker compose up --build
@@ -35,6 +41,8 @@ docker compose up --build
 - Volume `./data` mantém o banco entre reinicializações.
 
 ### 2) Build de imagem manual
+- Sempre executar ```bash mvn clean package ```
+
 ```bash
 docker build -f docker/Dockerfile.jvm -t invest-api .
 docker run -p 8080:8080 -v $(pwd)/data:/app/data --name invest-api invest-api
