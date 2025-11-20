@@ -19,7 +19,7 @@ class TelemetriaResourceTest {
                 .get("/telemetria")
                 .then()
                 .statusCode(200)
-                .body("servicos.size()", equalTo(11))
+                .body("servicos.size()", equalTo(2))
                 .body("servicos.find { it.nome == 'simular-investimento' }.quantidadeChamadas", equalTo(120))
                 .body("servicos.find { it.nome == 'perfil-risco' }.mediaTempoRespostaMs", equalTo(180f))
                 .body("periodo.inicio", notNullValue())

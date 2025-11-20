@@ -80,4 +80,5 @@ VALUES
 INSERT INTO telemetria (id, nome_servico, quantidade_chamadas, media_tempo_resposta_ms, data_registro)
 VALUES
 (1, 'simular-investimento', 120, 250, '2025-10-31'),
-(2, 'perfil-risco',          80, 180, '2025-10-31'),
+(2, 'perfil-risco',          80, 180, '2025-10-31');
+
